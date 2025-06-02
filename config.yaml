@@ -1,0 +1,91 @@
+# ───────────────────────── config.yaml ─────────────────────────
+# -------- Genel kontrol & navigasyon ----------
+control_hz:        20            # ana döngü (Hz)
+vehicle:           Drone1
+takeoff_alt:       3.0           # m
+max_vel_fwd:       4.0           # m/s
+sidestep_vel:      3.0           # m/s
+
+# -------- Güvenlik mesafeleri ----------
+safe_distance:     5.0           # m
+brake_distance:    6.0           # m
+sidestep_distance: 3.0           # m
+min_side_clear:    6.0           # m
+escape_alt:        4.0           # m
+stuck_vel_thr:     0.1           # m/s
+
+# -------- Sensör adları ----------
+lidar_name:        Lidar1
+seg_cam:           front_center
+seg_update_hz:     15             # Hz (segmentation refresh)
+
+# -------- Legacy grid (başka modüller görebilir) ----------
+cell_size:         0.25          # m  (yalnız eski modüller)
+map_radius:        50.0          # m
+grid_dim:          200           # hücre
+
+# ───────────────────── Lidar bloğu ─────────────────────
+lidar:
+  cell_size:     0.25            # m   (işleme çözünürlüğü)
+  grid_dim:      300             # hücre  (0.25 m × 300 ≈ 75 m kare)
+  z_min:        -0.10            # m   (altındaki noktalar atılır)
+  z_max:         5.00            # m   (üst sınır – opsiyonel)
+
+  # --- Yoğunluk & ışın ayarları ---
+  ray_free:      true            # ışın boyunca boş hücre serbest
+  blur:          5               # 0=kapalı, 3/5/7 px
+  density_k:     5               # ≥k vuruş  ⇒ engel
+  quantile:      0.25            # en yoğun %Q ⇒ engel (0 → devre dışı)
+  max_cost:      20              # cost-map üst klips
+  ransac_iter:   0               # zemin RANSAC (0=kapalı)
+  ransac_thresh: 0.03            # m (zemin düzlem toleransı)
+
+# ────────────────── Segmentation bloğu ──────────────────
+segmentation:
+  cam:          front_center
+  # seg_cam:      front_center
+  cams: [front_center, left, back, right]
+  vehicle:      Drone1
+  intrinsics:
+    w:          640
+    h:          480
+    fov_deg:    90
+  orient_map:
+    front_center: { rotate: 0, flip_h: false, flip_v: false }
+    left: { rotate: 90, flip_h: false, flip_v: false }
+    back: { rotate: 180, flip_h: false, flip_v: false }
+    right: { rotate: 270, flip_h: false, flip_v: false }
+  morph:        5               # px opening & closing (0=kapalı)
+  target_ids:   [44, 83, 96, 104, 108, 110, 117, 128, 132, 147, 166,
+                 191, 198, 212, 109, 151, 170, 182, 46, 26, 42, 232, 224,
+                 174, 24, 172, 61, 197, 210, 211, 36, 60, 126, 22, 6, 248,
+                 156]
+  non_obstacle_ids: [0, 232, 255]
+
+  # Kamera-özel oryantasyon haritası
+  orient:
+      rotate: 0       # 0|90|180|270  (CCW derece)
+      flip_h: false
+      flip_v: false
+
+# ──────────────────── Füzyon bloğu ────────────────────
+fusion:
+  mode:          fixed          # fixed | scaled | depthcam
+  logic:         union          # union=OR  /  and=AND
+  depth_max:     20             # m  (scaled/depthcam için)
+  view:          false          # CLI --view varsayılanı
+
+# ───────────────── Histogram-DWA / APF ─────────────────
+T_free:     4
+V_max:      5.0
+Omega_max:  90
+w_c:        2.0
+w_h:        1.0
+w_f:        0.6
+w_v:        0.2
+k_rep:      1.0
+k_attr:     0.3
+explore_T:  5.0
+# ───────────────────────────────────────────────────────
+
+

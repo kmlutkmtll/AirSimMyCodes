@@ -1,0 +1,9 @@
+# tests/orient_test.yaml
+segmentation:
+  cam: front_center
+  vehicle: Drone1
+  verbose: true
+  orient:
+    rotate: 180
+    flip_h: false
+    flip_v: false

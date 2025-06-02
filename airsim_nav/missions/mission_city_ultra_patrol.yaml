@@ -1,0 +1,176 @@
+# mission_city_ultra_patrol.yaml
+# ────────────────────────────────────────────────────────────────────────
+meta:
+  frame:          NED              # North-East-Down (AirSim varsayılan)
+  default_speed:  5.0              # m/s
+  reach_tol:      {xy: 1.0, z: 0.5}
+  cruise_alt:    -3.0              # m  (negatif = yerden yukarı)
+  description:    |
+      Çok fazlı görev: Kalkış → Alçak irtifa çevre devriyesi →
+      Bina incelemesi → Yüksek irtifa gözlem → Acil iniş simülasyonu →
+      RTB (Return-To-Base) + iniş.
+
+waypoints:
+  # ── FAZ-0 | Kalkış + Sistem Başlatma ─────────────────────────────────
+  - id:   TKO
+    phase:  STARTUP
+    pos:  {x: 0, y: 0, z: -1.0}     # yerden 1 m
+    yaw:  0
+    hold: 1.5
+    action: [arm, start_fusion]
+
+  - id:   CLB1
+    phase: STARTUP
+    pos:  {x: 0, y: 0, z: -3.0}     # cruise_alt
+    yaw:  0
+    speed: 2.5
+
+  # ── FAZ-1 | Alçak İrtifa Şehir Çevre Devriyesi (sekiz) ───────────────
+  - id:   WP_A1
+    phase: LOW_PATROL
+    pos:  {x:  30, y:   0, z: -3.0}
+    yaw:   90
+
+  - id:   WP_A2
+    phase: LOW_PATROL
+    pos:  {x:  30, y:  30, z: -3.0}
+    yaw:  135
+    action: [photo]
+
+  - id:   WP_A3
+    phase: LOW_PATROL
+    pos:  {x:   0, y:  30, z: -3.0}
+    yaw:  180
+
+  - id:   WP_A4
+    phase: LOW_PATROL
+    pos:  {x: -30, y:  30, z: -3.0}
+    yaw: -135
+    hold: 0.5
+
+  - id:   WP_A5
+    phase: LOW_PATROL
+    pos:  {x: -30, y:   0, z: -3.0}
+    yaw:  -90
+
+  - id:   WP_A6
+    phase: LOW_PATROL
+    pos:  {x: -30, y: -30, z: -3.0}
+    yaw:  -45
+
+  - id:   WP_A7
+    phase: LOW_PATROL
+    pos:  {x:   0, y: -30, z: -3.0}
+    yaw:    0
+    action: [scan_360]             # tam dönüş sensör taraması
+
+  - id:   WP_A8
+    phase: LOW_PATROL
+    pos:  {x:  30, y: -30, z: -3.0}
+    yaw:   45
+
+  - id:   WP_A9
+    phase: LOW_PATROL
+    pos:  {x:  30, y:   0, z: -3.0}
+    yaw:   90
+    hold: 1.0
+
+  # ── FAZ-2 | Bina İncelemesi (orta irtifa + eğik kamera) ──────────────
+  - id:   ASC2
+    phase: INSPECTION
+    pos:  {x:  25, y:   0, z: -6.0}
+    yaw:   90
+    speed: 2.5
+    action: [set_gimbal:-30]
+
+  - id:   BLD_SWEEP1
+    phase: INSPECTION
+    pos:  {x:  25, y:  15, z: -6.0}
+    yaw:  135
+    action: [photo]
+
+  - id:   BLD_SWEEP2
+    phase: INSPECTION
+    pos:  {x:  10, y:  25, z: -6.0}
+    yaw:  180
+
+  - id:   BLD_SWEEP3
+    phase: INSPECTION
+    pos:  {x: -10, y:  25, z: -6.0}
+    yaw:  225
+    action: [photo]
+
+  - id:   BLD_SWEEP4
+    phase: INSPECTION
+    pos:  {x: -25, y:  15, z: -6.0}
+    yaw: -135
+
+  - id:   ASC3
+    phase: INSPECTION
+    pos:  {x:   0, y:   0, z: -8.0}   # orta bina çatısı hizası
+    yaw:    0
+    hold: 2
+    action: [set_gimbal:-90, pano360]
+
+  # ── FAZ-3 | Yüksek İrtifa Gözlem (şehir panoraması) ──────────────────
+  - id:   HI_CLIMB
+    phase: HIGH_OBS
+    pos:  {x:   0, y:   0, z: -15.0}
+    yaw:    0
+    speed: 1.5
+
+  - id:   HI_ORBIT_N
+    phase: HIGH_OBS
+    pos:  {x:   0, y:  40, z: -15.0}
+    yaw:  180
+    action: [photo]
+
+  - id:   HI_ORBIT_E
+    phase: HIGH_OBS
+    pos:  {x:  40, y:   0, z: -15.0}
+    yaw:  -90
+
+  - id:   HI_ORBIT_S
+    phase: HIGH_OBS
+    pos:  {x:   0, y: -40, z: -15.0}
+    yaw:    0
+    action: [photo]
+
+  - id:   HI_ORBIT_W
+    phase: HIGH_OBS
+    pos:  {x: -40, y:   0, z: -15.0}
+    yaw:   90
+
+  # ── FAZ-4 | Acil İniş Simülasyonu (hızlı alçalma) ────────────────────
+  - id:   EMG_DESC
+    phase: EMERGENCY_DESCENT
+    pos:  {x: -15, y: -15, z: -5.0}
+    yaw:  -45
+    speed: 6.0
+    action: [beacon_on]
+
+  - id:   SAFE_HOVER
+    phase: EMERGENCY_DESCENT
+    pos:  {x: -15, y: -15, z: -3.0}
+    yaw:  -45
+    hold: 3
+    action: [beacon_off]
+
+  # ── FAZ-5 | RTB + İniş ───────────────────────────────────────────────
+  - id:   RTB1
+    phase: RETURN
+    pos:  {x:  -5, y:  -5, z: -3.0}
+    yaw:   45
+
+  - id:   RTB2
+    phase: RETURN
+    pos:  {x:   0, y:   0, z: -3.0}
+    yaw:    0
+    hold: 1
+    action: [stop_fusion]
+
+  - id:   LAND
+    phase: RETURN
+    pos:  {x:   0, y:   0, z:  0.0}
+    yaw:    0
+    action: [land, disarm]
