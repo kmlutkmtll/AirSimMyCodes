@@ -104,9 +104,17 @@ def fetch_mask(client: airsim.MultirotorClient,
         ids  = img[:, :, chan]
 
     mask = np.isin(ids, list(target_ids)).astype(np.uint8)
-    # YAML’deki veya fonksiyon argümanındaki yön düzeltmesini uygula
-    mask = _apply_orient(mask,
-                         (params.segmentation or {}).get("orient"))
+
+    # YAML'deki orient_map veya orient ayarini uygula
+    seg_cfg = params.segmentation or {}
+    orient = seg_cfg.get("orient_map", {}).get(cam) or seg_cfg.get("orient")
+    if orient is None:
+        if seg_cfg.get("verbose", True):
+            print(
+                f"[seg] \N{WARNING SIGN} Kamera '{cam}' icin orient tanimsiz \N{EM DASH} donus uygulanmadi"
+            )
+    else:
+        mask = _apply_orient(mask, orient)
     return mask
 
 # ───────────────────────── CLI / TEST ──────────────────────
