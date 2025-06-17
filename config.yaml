@@ -2,12 +2,12 @@
 # -------- Genel kontrol & navigasyon ----------
 control_hz:        20            # ana döngü (Hz)
 vehicle:           Drone1
-takeoff_alt:       3.0           # m
+takeoff_alt:       10.0           # m
 max_vel_fwd:       4.0           # m/s
 sidestep_vel:      3.0           # m/s
 
 # -------- Güvenlik mesafeleri ----------
-safe_distance:     5.0           # m
+safe_distance:     8.0           # m
 brake_distance:    6.0           # m
 sidestep_distance: 3.0           # m
 min_side_clear:    6.0           # m
@@ -17,15 +17,16 @@ stuck_vel_thr:     0.1           # m/s
 # -------- Sensör adları ----------
 lidar_name:        Lidar1
 seg_cam:           front_center
-seg_update_hz:     15             # Hz (segmentation refresh)
 
 # -------- Legacy grid (başka modüller görebilir) ----------
-cell_size:         0.25          # m  (yalnız eski modüller)
-map_radius:        50.0          # m
-grid_dim:          200           # hücre
+# cell_size:         0.25          # m  (yalnız eski modüller)
+# map_radius:        50.0          # m
+# grid_dim:          200           # hücre
 
 # ───────────────────── Lidar bloğu ─────────────────────
 lidar:
+  HorizontalFOVStart: -180
+  HorizontalFOVEnd: 180
   cell_size:     0.25            # m   (işleme çözünürlüğü)
   grid_dim:      300             # hücre  (0.25 m × 300 ≈ 75 m kare)
   z_min:        -0.10            # m   (altındaki noktalar atılır)
@@ -43,19 +44,17 @@ lidar:
 # ────────────────── Segmentation bloğu ──────────────────
 segmentation:
   cam:          front_center
+  cams:         [front_center, left, back, right]
+  update_hz:    20
+  intrinsics:   { w: 320, h: 240, fov_deg: 90 }
   # seg_cam:      front_center
-  cams: [front_center, left, back, right]
   vehicle:      Drone1
-  intrinsics:
-    w:          640
-    h:          480
-    fov_deg:    90
   orient_map:
     front_center: { rotate: 0, flip_h: false, flip_v: false }
     left: { rotate: 90, flip_h: false, flip_v: false }
     back: { rotate: 180, flip_h: false, flip_v: false }
     right: { rotate: 270, flip_h: false, flip_v: false }
-  morph:        5               # px opening & closing (0=kapalı)
+  morph:        3               # px opening & closing (0=kapalı)
   target_ids:   [44, 83, 96, 104, 108, 110, 117, 128, 132, 147, 166,
                  191, 198, 212, 109, 151, 170, 182, 46, 26, 42, 232, 224,
                  174, 24, 172, 61, 197, 210, 211, 36, 60, 126, 22, 6, 248,
@@ -63,10 +62,10 @@ segmentation:
   non_obstacle_ids: [0, 232, 255]
 
   # Kamera-özel oryantasyon haritası
-  orient:
-      rotate: 0       # 0|90|180|270  (CCW derece)
-      flip_h: false
-      flip_v: false
+  # orient:
+      # rotate: 0       # 0|90|180|270  (CCW derece)
+      # flip_h: false
+      # flip_v: false
 
 # ──────────────────── Füzyon bloğu ────────────────────
 fusion:
@@ -87,5 +86,15 @@ k_rep:      1.0
 k_attr:     0.3
 explore_T:  5.0
 # ───────────────────────────────────────────────────────
-
+gap_nav:
+  fwd_speed: 5.0
+  ttc_sec: 1.4
+  min_brake_dist: 6.0
+  clear_dist: 9.0
+  safety_margin: 1.0
+  brake_back_speed: 8.0
+  brake_back_time: 1.0
+  step_time: 0.25
+  fov_scan_deg: 200
+  gap_bins: 80
 

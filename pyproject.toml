@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "airsim-pipeline"
+version = "0.1.0"
+description = "AirSim → ChaIR Dehaze → YOLOv11 gerçek zamanlı pipeline"
+authors = [{name = "Kemal Utku Mutlu", email = "you@example.com"}]
+dependencies = [
+    "numpy",
+    "opencv-python",
+    "pycuda",
+    "airsim",
+    # Tensorrt wheel zaten el ile kurulu → pip’de yok
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["airsim_pipeline*"]
