@@ -1,0 +1,169 @@
+{
+  "SettingsVersion": 1.2,
+  "SimMode": "Multirotor",
+  "ClockSpeed": 1,
+  "SegmentationSettings": {
+    "InitMethod": "CommonObjectsRandomIDs"
+  },
+  "OriginGeopoint": {
+    "Latitude": 47.641468,
+    "Longitude": -122.140165,
+    "Altitude": 0
+  },
+  "Vehicles": {
+    "Drone1": {
+      "VehicleType": "SimpleFlight",
+      "AutoCreate": true,
+      "DefaultVehicleLocation": {
+        "X": 0.0,
+        "Y": 0.0,
+        "Z": 0.0
+      },
+      "Sensors": {
+        "DistanceSensor1": {
+          "SensorType": 1,
+          "Enabled": false,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Imu1": {
+          "SensorType": 2,
+          "Enabled": false,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Gps1": {
+          "SensorType": 3,
+          "Enabled": false,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "Barometer1": {
+          "SensorType": 5,
+          "Enabled": false
+        },
+        "Lidar1": {
+          "SensorType": 6,
+          "Enabled": true,
+          "NumberOfChannels": 64,
+          "Range": 50,
+          "PointsPerSecond": 20000,
+          "RotationsPerSecond": 20,
+          "HorizontalFOVStart": -180,
+          "HorizontalFOVEnd": 180,
+          "VerticalFOVUpper": 15,
+          "VerticalFOVLower": -30,
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.2,
+          "Roll": 0.0,
+          "Pitch": -5,
+          "Yaw": 0.0,
+          "DataFrame": "SensorLocalFrame",
+          "DrawDebugPoints": true
+        }
+      },
+      "Cameras": {
+        "front_center": {
+          "CaptureSettings": [
+            {
+              "ImageType": 0,
+              "FOV_Degrees": 90,
+              "Width": 640,
+              "Height": 360,
+              "AutoExposureSpeed": 10.0,
+              "AutoExposureMaxBrightness": 0.8,
+              "AutoExposureMinBrightness": 0.2,
+              "EnablePostprocess": false
+            },
+            {
+              "ImageType": 2,
+              "FOV_Degrees": 90,
+              "Width": 256,
+              "Height": 144
+            },
+            {
+              "ImageType": 5,
+              "FOV_Degrees": 90,
+              "Width": 320,
+              "Height": 240
+            }
+          ],
+          "X": 0.45,
+          "Y": 0.0,
+          "Z": -0.1,
+          "Pitch": 0.0,
+          "Roll": 0.0,
+          "Yaw": 0.0
+        },
+        "left": {
+          "CaptureSettings": [
+            {
+              "ImageType": 5,
+              "FOV_Degrees": 90,
+              "Width": 640,
+              "Height": 480
+            }
+          ],
+          "X": 0.5,
+          "Y": 0.0,
+          "Z": -0.2,
+          "Pitch": 0.0,
+          "Roll": 0.0,
+          "Yaw": -90.0
+        },
+        "back": {
+          "CaptureSettings": [
+            {
+              "ImageType": 5,
+              "FOV_Degrees": 90,
+              "Width": 640,
+              "Height": 480
+            }
+          ],
+          "X": 0.5,
+          "Y": 0.0,
+          "Z": -0.2,
+          "Pitch": 0.0,
+          "Roll": 0.0,
+          "Yaw": 180.0
+        },
+        "right": {
+          "CaptureSettings": [
+            {
+              "ImageType": 5,
+              "FOV_Degrees": 90,
+              "Width": 640,
+              "Height": 480
+            }
+          ],
+          "X": 0.5,
+          "Y": 0.0,
+          "Z": -0.2,
+          "Pitch": 0.0,
+          "Roll": 0.0,
+          "Yaw": 90.0 
+        },
+        "bottom_center": {
+          "CaptureSettings": [
+            {
+              "ImageType": 0,
+              "FOV_Degrees": 90,
+              "Width": 640,
+              "Height": 360
+            }
+          ],
+          "X": 0.5,
+          "Y": 0.0,
+          "Z": -0.8,
+          "Pitch": -20.0,
+          "Roll": 0.0,
+          "Yaw": 0.0
+        }
+      }
+    }
+  }
+}
